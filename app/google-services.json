@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "145754188378",
+    "project_id": "newchatapp-cc551",
+    "storage_bucket": "newchatapp-cc551.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145754188378:android:7d8e46eb6c08e2bcc74663",
+        "android_client_info": {
+          "package_name": "com.soma.mychatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT68kwJqtfBqiTxLMojFjbtvUWtxxxGUg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
