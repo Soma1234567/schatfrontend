@@ -1,6 +1,8 @@
 package com.soma.mychatapp.di
 
 import androidx.room.Room
+import com.soma.mychatapp.MySignUpViewModel
+import com.soma.mychatapp.MySplashViewModel
 import com.soma.mychatapp.data.local.MessageDatabase
 import com.soma.mychatapp.data.remote.ChatApi
 import com.soma.mychatapp.data.repository.DataStoreOperationsImpl
@@ -37,11 +39,8 @@ import com.soma.mychatapp.domain.use_cases.update_token.UpdateTokenUseCase
 import com.soma.mychatapp.presentation.chat_screen.ChatViewModel
 import com.soma.mychatapp.presentation.home_screen.ChatsViewModel
 import com.soma.mychatapp.presentation.home_screen.HomeViewModel
-import com.soma.mychatapp.presentation.login_screen.LoginViewModel
 import com.soma.mychatapp.presentation.profile_screen.ProfileViewModel
 import com.soma.mychatapp.presentation.serachuser_screen.SearchViewModel
-import com.soma.mychatapp.presentation.signup_screen.SignUpViewModel
-import com.soma.mychatapp.presentation.splash_screen.SplashViewModel
 import okhttp3.OkHttpClient
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
@@ -166,15 +165,6 @@ val appModule = module {
     single<UpdateAvatarUseCase> {
         UpdateAvatarUseCase(get())
     }
-    viewModel<SplashViewModel>{
-        SplashViewModel(get())
-    }
-    viewModel<SignUpViewModel>{
-        SignUpViewModel(get())
-    }
-    viewModel<LoginViewModel>{
-        LoginViewModel(get())
-    }
     viewModel<SearchViewModel>{
         SearchViewModel(get())
     }
@@ -189,5 +179,11 @@ val appModule = module {
     }
     viewModel<ProfileViewModel>{
         ProfileViewModel(get())
+    }
+    viewModel<MySplashViewModel>{
+        MySplashViewModel(get())
+    }
+    viewModel<MySignUpViewModel>{
+        MySignUpViewModel(get())
     }
 }

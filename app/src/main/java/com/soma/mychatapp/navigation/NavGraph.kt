@@ -12,20 +12,15 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.soma.mychatapp.presentation.chat_screen.ChatScreen
 import com.soma.mychatapp.presentation.home_screen.HomeScreen
-import com.soma.mychatapp.presentation.login_screen.LoginScreen
 import com.soma.mychatapp.presentation.profile_screen.ProfileScreen
 import com.soma.mychatapp.presentation.serachuser_screen.SearchScreen
-import com.soma.mychatapp.presentation.signup_screen.SignupScreen
-import com.soma.mychatapp.presentation.splash_screen.SplashScreen
 
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
-fun NavGraph(navController:NavHostController,start:String=Screen.SplashScreen.route){
+fun NavGraph(navController:NavHostController,start:String = Screen.HomeScreen.route){
     NavHost(navController = navController, startDestination = start){
-        composable(Screen.SplashScreen.route){
-            SplashScreen(navController)
-        }
+
         composable(Screen.HomeScreen.route){
             HomeScreen(navController)
         }
@@ -67,12 +62,7 @@ fun NavGraph(navController:NavHostController,start:String=Screen.SplashScreen.ro
             val avatar = backstack.arguments?.getInt("avatar")
             ChatScreen(navController,username!!,avatar!!)
         }
-        composable(route=Screen.SignUpScreen.route){
-            SignupScreen(navController)
-        }
-        composable(route=Screen.LoginScreen.route){
-            LoginScreen(navController)
-        }
+
         composable(
             route = Screen.ProfileScreen.route,
             enterTransition = {
@@ -93,8 +83,3 @@ fun NavGraph(navController:NavHostController,start:String=Screen.SplashScreen.ro
     }
 }
 
-fun slideIntoContainer(
-
-){
-
-}
