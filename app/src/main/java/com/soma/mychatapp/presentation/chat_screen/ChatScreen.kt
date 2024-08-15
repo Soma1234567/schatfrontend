@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CopyAll
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material3.DropdownMenu
@@ -74,7 +75,7 @@ import org.koin.androidx.compose.getViewModel
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun ChatScreen(navController: NavHostController,username:String,avatar:Int,viewModel: ChatViewModel = getViewModel()) {
+fun ChatScreen(navController: NavHostController,username:String,number: String,viewModel: ChatViewModel = getViewModel()) {
     var showmenu = remember {
         mutableStateOf(false)
     }
@@ -138,18 +139,17 @@ fun ChatScreen(navController: NavHostController,username:String,avatar:Int,viewM
         }
     }
     LaunchedEffect(Unit){
-        viewModel.setAvatar(avatar)
-        viewModel.setUnreadToZero(username)
+        viewModel.setUnreadToZero(number)
     }
     LaunchedEffect(messages.value.size){
-        viewModel.setUnreadToZero(username)
-        viewModel.loadMessages(username)
-        viewModel.readTheirMessages(username,context)
+        viewModel.setUnreadToZero(number)
+        viewModel.loadMessages(number)
+        viewModel.readTheirMessages(number,context)
     }
     DisposableEffect(key1 = lifeCycleOwner){
         val observer = LifecycleEventObserver{_,event->
             if(event==Lifecycle.Event.ON_RESUME){
-                viewModel.readTheirMessages(username,context)
+                viewModel.readTheirMessages(number,context)
             }
         }
         lifeCycleOwner.lifecycle.addObserver(observer)
@@ -169,7 +169,7 @@ fun ChatScreen(navController: NavHostController,username:String,avatar:Int,viewM
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Image(
-                        painter = painterResource(id = images[avatar]),
+                        imageVector = Icons.Default.Person,
                         contentDescription = null,
                         modifier = Modifier
                             .size(40.dp)
@@ -247,7 +247,7 @@ fun ChatScreen(navController: NavHostController,username:String,avatar:Int,viewM
                         key = {
                             it.toString()
                         }){
-                        if(allmessages[it].from==state.username){
+                        if(allmessages[it].from==state.number){
                             MyMessage(message = allmessages[it].message, time = allmessages[it].time,allmessages[it].status,selectedmessageindex==it,{selectedmessageindex=it})
                         }
                         else{

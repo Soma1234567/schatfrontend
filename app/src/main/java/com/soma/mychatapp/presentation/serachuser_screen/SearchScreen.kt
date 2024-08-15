@@ -1,5 +1,6 @@
 package com.soma.mychatapp.presentation.serachuser_screen
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +19,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
+import com.soma.mychatapp.data.local.Contact
 import com.soma.mychatapp.data.remote.requests.SearchUser
 import com.soma.mychatapp.navigation.Screen
 import com.soma.mychatapp.presentation.home_screen.images
@@ -55,8 +59,12 @@ fun SearchScreen(navController: NavHostController,viewModel: SearchViewModel = g
     val query = remember {
         mutableStateOf("")
     }
+    val state by viewModel.uistate.collectAsState()
+    LaunchedEffect(query.value){
+        viewModel.AllContacts(query.value)
+    }
     val context = LocalContext.current
-    val state by viewModel.state.collectAsState()
+
     if(state.loadingState){
         Dialog(onDismissRequest = {}) {
             Box(modifier = Modifier.size(50.dp), contentAlignment = Alignment.Center){
@@ -67,7 +75,9 @@ fun SearchScreen(navController: NavHostController,viewModel: SearchViewModel = g
         }
     }
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
     ) {
         OutlinedTextField(value = query.value, onValueChange = {
             query.value = it
@@ -83,82 +93,49 @@ fun SearchScreen(navController: NavHostController,viewModel: SearchViewModel = g
             },
             keyboardActions = KeyboardActions(
                 onSearch = {
-                    viewModel.find(context, query.value)
+
                 }
             ),
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Search
             )
         )
-        if (query.value.isEmpty()){
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(painter = painterResource(id = R.drawable.friends), contentDescription = null, modifier = Modifier.size(80.dp))
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(text = "Find friends by username", fontSize = 20.sp, fontFamily = FontFamily(
-                    Font(R.font.poetsen)
-                ))
-            }
-        }
-        else if(state.size==0){
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(painter = painterResource(id = R.drawable.notfound), contentDescription = null, modifier = Modifier.size(80.dp))
-                Spacer(modifier = Modifier.height(10.dp))
-                Text(text = "No such users found", fontSize = 20.sp, fontFamily = FontFamily(
-                    Font(R.font.poetsen)
-                ))
-            }
-        }
-        else{
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
             ) {
-                for (i in 0 until state.size){
+                for (i in 0 until state.users.size){
                     SearchItem(user = state.users[i]) {
-                        if(state.users[i].username==viewModel.username.value){
-                            navController.navigate(Screen.ProfileScreen.route)
-                        }
-                        else{
-                            navController.navigate(Screen.ChatScreen.passusername(state.users.get(i).username,state.users.get(i).avatar))
 
-                        }
+                            navController.navigate(Screen.ChatScreen.passusername(state.users.get(i).name,0))
                     }
                 }
             }
-        }
+
 
     }
 }
 
 @Composable
-fun SearchItem(user:SearchUser,onclick:()->Unit){
+fun SearchItem(user:Contact,onclick:()->Unit){
     Row(
         modifier = Modifier
             .padding(horizontal = 20.dp, vertical = 3.dp)
             .fillMaxWidth()
             .height(50.dp)
             .clickable {
-                       onclick()
+                onclick()
             },
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(painter = painterResource(id = images[user.avatar]), contentDescription = null, modifier = Modifier
-            .size(45.dp)
-            .clip(RoundedCornerShape(50.dp)))
+        Icon(imageVector = Icons.Default.Person, contentDescription = null, modifier = Modifier
+            .size(40.dp)
+            .clip(RoundedCornerShape(50.dp))
+            .background(color = Color.LightGray),
+            tint = Color.DarkGray)
         Spacer(modifier = Modifier.width(20.dp))
-        Text(text = user.username, fontSize = 19.sp, color = Color.Black)
+        Text(text = user.name, fontSize = 19.sp, color = Color.Black)
     }
 }

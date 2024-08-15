@@ -71,7 +71,6 @@ fun ChatsScreen(navController:NavHostController,chatsViewModel: ChatsViewModel =
     val allstate by  chatsViewModel.alreadyusersstate.collectAsState()
     if(query.value.isBlank()){
         users = allstate.reversed()
-
     }
     else{
         users = chatsViewModel.newalreadystate.collectAsState().value
@@ -86,6 +85,7 @@ fun ChatsScreen(navController:NavHostController,chatsViewModel: ChatsViewModel =
     ) {
         Column(
             modifier = Modifier.fillMaxSize()
+                .background(color = Color.White)
         ) {
             OutlinedTextField(value = query.value, onValueChange = {
                query.value = it
@@ -121,7 +121,7 @@ fun ChatsScreen(navController:NavHostController,chatsViewModel: ChatsViewModel =
             ){
                 for (i in 0 until users.size){
                     ChatUser(users[i], i,chatsViewModel){
-                        navController.navigate(Screen.ChatScreen.passusername(users[i].whom,users[i].avatar.toInt()))
+                        navController.navigate(Screen.ChatScreen.passusername(users[i].whom,users[i].))
                     }
                 }
             }

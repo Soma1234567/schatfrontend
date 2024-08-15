@@ -6,5 +6,4 @@ import androidx.room.PrimaryKey
 data class AlreadyUsers(
     @PrimaryKey
     val username:String
-
 )

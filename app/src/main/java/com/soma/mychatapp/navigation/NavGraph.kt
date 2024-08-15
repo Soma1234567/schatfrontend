@@ -59,8 +59,8 @@ fun NavGraph(navController:NavHostController,start:String = Screen.HomeScreen.ro
 
         ){backstack->
             val username = backstack.arguments?.getString("username")
-            val avatar = backstack.arguments?.getInt("avatar")
-            ChatScreen(navController,username!!,avatar!!)
+            val number = backstack.arguments?.getString("number")
+            ChatScreen(navController,username!!,number!!)
         }
 
         composable(

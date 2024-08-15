@@ -6,5 +6,5 @@ data class ChatState(
     val message:String = "",
     val messages:List<SingleMessage> = emptyList(),
     val username:String = "",
-    val avatar:Int = 0,
+    val number:String = "",
 )

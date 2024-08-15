@@ -5,6 +5,7 @@ import com.soma.mychatapp.MySignUpViewModel
 import com.soma.mychatapp.MySplashViewModel
 import com.soma.mychatapp.data.local.MessageDatabase
 import com.soma.mychatapp.data.remote.ChatApi
+import com.soma.mychatapp.data.repository.ContactRepository
 import com.soma.mychatapp.data.repository.DataStoreOperationsImpl
 import com.soma.mychatapp.data.repository.Repository
 import com.soma.mychatapp.domain.repository.DataStoreOperations
@@ -164,6 +165,9 @@ val appModule = module {
     }
     single<UpdateAvatarUseCase> {
         UpdateAvatarUseCase(get())
+    }
+    single<ContactRepository> {
+        ContactRepository(get())
     }
     viewModel<SearchViewModel>{
         SearchViewModel(get())

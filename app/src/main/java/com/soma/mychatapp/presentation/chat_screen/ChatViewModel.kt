@@ -47,16 +47,16 @@ class ChatViewModel(
             message = new
         )
     }
-    fun setAvatar(avatar:Int){
+    fun setName(name:String){
         _state.value = _state.value.copy(
-            avatar = avatar
+            username = name
         )
     }
     fun loadMessages(to:String) {
         viewModelScope.launch {
             messages = usecases.readMessagesUseCase(to).stateIn(viewModelScope)
             _state.value = _state.value.copy(
-                username = usecases.readUsernameUsecase().stateIn(viewModelScope).value,
+                number = usecases.readUsernameUsecase().stateIn(viewModelScope).value,
             )
         }
     }
@@ -83,7 +83,6 @@ class ChatViewModel(
                         "formatteddate" to formattedDate,
                         "formattedtime" to formattedTime
                     )
-
                 ).setConstraints(
                     Constraints(
                         requiredNetworkType = NetworkType.CONNECTED
@@ -94,7 +93,7 @@ class ChatViewModel(
             WorkManager.getInstance(context).enqueue(request)
             viewModelScope.launch(Dispatchers.IO) {
                 val from = state.value.username
-                usecases.insertMessageUseCase(SingleMessage(state.value.username,to,state.value.message,formattedTime,formattedDate,millis,Status.NOT_SENT.name,state.value.avatar.toString(),to))
+                usecases.insertMessageUseCase(SingleMessage(state.value.username,to,state.value.message,formattedTime,formattedDate,millis,Status.NOT_SENT.name,"0",to))
                 usecases.deleteALreadyChatUserUseCase(to)
                 _state.value = _state.value.copy(
                     message = ""
